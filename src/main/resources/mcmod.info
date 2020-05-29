@@ -1,0 +1,16 @@
+[
+{
+  "modid": "IPAPI",
+  "name": "IP API",
+  "description": "IP API",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["nurDeutsch"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
