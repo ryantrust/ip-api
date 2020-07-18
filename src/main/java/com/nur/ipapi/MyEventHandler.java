@@ -1,14 +1,9 @@
 package com.nur.ipapi;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
@@ -18,9 +13,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.regex.*;
-
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
 
 public class MyEventHandler {
 	@SubscribeEvent
@@ -39,7 +31,6 @@ public class MyEventHandler {
 					con.setRequestMethod("GET");
 					con.setRequestProperty("User-Agent", "Mozilla/5.0");
 					con.addRequestProperty("X-Key", "**IPHUB API KEY HERE**");
-					int responseCode = con.getResponseCode();
 					BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 					String inputLine;
 					StringBuffer response = new StringBuffer();
