@@ -18,11 +18,12 @@ public class MyEventHandler {
 	@SubscribeEvent
     public void onOtherChat(ClientChatReceivedEvent event)
     {
-		if(event.message.getUnformattedText().contains("IP Address")||event.message.getUnformattedText().contains("Scanning")) {
+		String msg = event.message.getUnformattedText();
+		if(msg.contains("IP Address")||msg.contains("Scanning")||(msg.contains("*")&&msg.contains(":")&&msg.contains("[")&&msg.contains("]"))) {
 			String zeroTo255 = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
 			String IP_REGEXP = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;
 			Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
-			Matcher m = IP_PATTERN.matcher(event.message.getUnformattedText());
+			Matcher m = IP_PATTERN.matcher(msg);
 			if(m.find()) {
 				ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://iphub.info/?ip="+m.group(0)));
 				try {
@@ -39,16 +40,23 @@ public class MyEventHandler {
 					}
 					in.close();
 					if(response.toString().contains("\"block\":0")) {
-						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+m.group(0)+EnumChatFormatting.GOLD+" is a "+EnumChatFormatting.GREEN+"Residential or business IP (good)").setChatStyle(style));
+						//Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+m.group(0)+EnumChatFormatting.GOLD+" is "+EnumChatFormatting.GREEN+"good").setChatStyle(style));
+						event.message.appendSibling(new ChatComponentText(""+EnumChatFormatting.GREEN+" (good)"));
+						event.message.setChatStyle(style);
 					} else if (response.toString().contains("\"block\":1")) {
-						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+m.group(0)+EnumChatFormatting.GOLD+" is a "+EnumChatFormatting.DARK_RED+"Non-residential IP (hosting provider, proxy, etc.) (bad)").setChatStyle(style));
+						//Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+m.group(0)+EnumChatFormatting.GOLD+" is "+EnumChatFormatting.RED+"bad").setChatStyle(style));
+						event.message.appendSibling(new ChatComponentText(""+EnumChatFormatting.RED+" (bad)"));
+						event.message.setChatStyle(style);
 					} else if (response.toString().contains("\"block\":2")) {
-						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+m.group(0)+EnumChatFormatting.GOLD+" is a "+EnumChatFormatting.YELLOW+"Non-residential & residential IP (warning, may flag innocent people)").setChatStyle(style));
+						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+m.group(0)+EnumChatFormatting.GOLD+" is "+EnumChatFormatting.YELLOW+"Non-residential & residential IP (warning, may flag innocent people)").setChatStyle(style));
+						event.message.setChatStyle(style);
 					} else {
-						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) Error while scanning "+m.group(0)).setChatStyle(style));
+						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
+						event.message.setChatStyle(style);
 					}
 				} catch (Exception ex) {
-					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+"(!) Error while scanning "+m.group(0)).setChatStyle(style));
+					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
+					event.message.setChatStyle(style);
 				}
 			};
 		}
