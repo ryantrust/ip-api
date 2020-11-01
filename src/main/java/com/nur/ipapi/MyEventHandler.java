@@ -25,7 +25,8 @@ public class MyEventHandler {
 			Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
 			Matcher m = IP_PATTERN.matcher(msg);
 			if(m.find()) {
-				ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://iphub.info/?ip="+m.group(0)));
+				//ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://iphub.info/?ip="+m.group(0)));
+				ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, "/alts "+m.group(0)));
 				try {
 					URL url = new URL("http://v2.api.iphub.info/ip/"+m.group(0));
 					HttpURLConnection con = (HttpURLConnection) url.openConnection();
