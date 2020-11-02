@@ -20,7 +20,7 @@ public class MyEventHandler {
     {
 		String msg = event.message.getUnformattedText();
 		if(msg.contains("IP Address")||msg.contains("Scanning")||(msg.contains("*")&&msg.contains(":")&&msg.contains("[")&&msg.contains("]"))) {
-			String zeroTo255 = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
+			String zeroTo255 = "(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})";
 			String IP_REGEXP = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;
 			Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
 			Matcher m = IP_PATTERN.matcher(msg);
