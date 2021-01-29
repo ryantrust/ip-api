@@ -1,6 +1,6 @@
 [
 {
-  "modid": "IPAPI",
+  "modid": "ipapi",
   "name": "IP API",
   "description": "IP API",
   "version": "${version}",
