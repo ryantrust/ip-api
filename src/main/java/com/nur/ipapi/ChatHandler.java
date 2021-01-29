@@ -94,9 +94,9 @@ public class ChatHandler {
 						in.close();
 						String j = ChatHandler.parser.parse(errorMessage.toString()).getAsJsonObject().get("error").getAsString();
 						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)+": "+EnumChatFormatting.UNDERLINE+j).setChatStyle(style));
-					} catch (IOException ioException) {
+					} catch (Exception exception) {
 						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
-						ioException.printStackTrace();
+						exception.printStackTrace();
 					}
 					ex.printStackTrace();
 				}
