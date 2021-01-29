@@ -1,6 +1,7 @@
 package com.nur.ipapi;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -45,9 +46,10 @@ public class ChatHandler {
 			if(m.find()) {
 				//ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://iphub.info/?ip="+m.group(0)));
 				ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, "/alts "+m.group(0)));
+				HttpURLConnection con = null;
 				try {
 					URL url = new URL("http://v2.api.iphub.info/ip/"+m.group(0));
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
+					con = (HttpURLConnection) url.openConnection();
 					con.setRequestMethod("GET");
 					con.setRequestProperty("User-Agent", "Mozilla/5.0");
 					con.addRequestProperty("X-Key", Main.apiKey);
@@ -82,8 +84,20 @@ public class ChatHandler {
 							event.message.setChatStyle(style);
 					}
 				} catch (Exception ex) {
-					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
-					event.message.setChatStyle(style);
+					try {
+						BufferedReader in = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+						String inputLine;
+						StringBuilder errorMessage = new StringBuilder();
+						while ((inputLine = in.readLine()) != null) {
+							errorMessage.append(inputLine);
+						}
+						in.close();
+						String j = ChatHandler.parser.parse(errorMessage.toString()).getAsJsonObject().get("error").getAsString();
+						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)+": "+EnumChatFormatting.UNDERLINE+j).setChatStyle(style));
+					} catch (IOException ioException) {
+						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
+						ioException.printStackTrace();
+					}
 					ex.printStackTrace();
 				}
 			}

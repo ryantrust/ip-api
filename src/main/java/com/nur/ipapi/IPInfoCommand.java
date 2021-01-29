@@ -51,9 +51,9 @@ public class IPInfoCommand implements ICommand {
             new Thread(new Runnable() {
                 public void run() {
                     Matcher matcher = m;
+                    HttpURLConnection con = null;
                     try {
                         URL url = new URL("http://v2.api.iphub.info/ip/"+matcher.group(0));
-                        HttpURLConnection con = null;
                         con = (HttpURLConnection) url.openConnection();
                         con.setRequestMethod("GET");
                         con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -92,8 +92,21 @@ public class IPInfoCommand implements ICommand {
                         Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+" * "+EnumChatFormatting.GRAY+"Country: "+EnumChatFormatting.RED+countryName).setChatStyle(style));
                         Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+" * "+EnumChatFormatting.GRAY+"ISP: "+EnumChatFormatting.RED+j.get("isp").getAsString()).setChatStyle(style));
                     } catch (IOException e) {
+                        try {
+                            BufferedReader in = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                            String inputLine;
+                            StringBuilder errorMessage = new StringBuilder();
+                            while ((inputLine = in.readLine()) != null) {
+                                errorMessage.append(inputLine);
+                            }
+                            in.close();
+                            String j = ChatHandler.parser.parse(errorMessage.toString()).getAsJsonObject().get("error").getAsString();
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+matcher.group(0)+": "+EnumChatFormatting.UNDERLINE+j).setChatStyle(style));
+                        } catch (IOException ioException) {
                             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+matcher.group(0)).setChatStyle(style));
-                            e.printStackTrace();
+                            ioException.printStackTrace();
+                        }
+                        e.printStackTrace();
                     }
                 }
             }).start();
