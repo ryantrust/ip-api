@@ -27,6 +27,10 @@ public class SetIPHubKeyCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
+        if(args.length==0) {
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY+"/setiphubkey <api key>"));
+            return;
+        }
         try{
             Main.setAPIKey(args[0]);
         } catch (Exception e){
