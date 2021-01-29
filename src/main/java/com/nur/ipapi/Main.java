@@ -25,6 +25,7 @@ public class Main
     	MinecraftForge.EVENT_BUS.register(new ChatHandler());
         ClientCommandHandler.instance.registerCommand(new IPInfoCommand());
         ClientCommandHandler.instance.registerCommand(new ToggleIPCheckCommand());
+        ClientCommandHandler.instance.registerCommand(new SetIPHubKeyCommand());
         apiKey = ConfigHandler.getString("api","key","");
     }
 }
