@@ -84,6 +84,7 @@ public class ChatHandler {
 				} catch (Exception ex) {
 					Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
 					event.message.setChatStyle(style);
+					ex.printStackTrace();
 				}
 			}
 		}

@@ -35,6 +35,7 @@ public class SetIPHubKeyCommand implements ICommand {
             Main.setAPIKey(args[0]);
         } catch (Exception e){
             sender.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+ EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error occured (likely an invalid API key)!"));
+            e.printStackTrace();
             return;
         }
         sender.addChatMessage(new ChatComponentText(""+EnumChatFormatting.GREEN+ EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.GREEN+"Set API Key!"));

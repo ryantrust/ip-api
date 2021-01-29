@@ -94,9 +94,9 @@ public class IPInfoCommand implements ICommand {
                     } catch (IOException e) {
                             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+matcher.group(0)).setChatStyle(style));
                             e.printStackTrace();
-                        }
                     }
-                }).start();
+                }
+            }).start();
         }
         else {
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+ EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+args[0]+" is not a valid IP Address!"));
