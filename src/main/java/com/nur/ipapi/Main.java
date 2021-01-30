@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 @Mod(modid = Main.MODID, name = Main.NAME, version = Main.VERSION)
 public class Main
 {
-    public static final String MODID = "IPAPI";
+    public static final String MODID = "ipapi";
     public static final String NAME = "IP API";
     public static final String VERSION = "1.0";
 
