@@ -50,10 +50,11 @@ public class IPInfoCommand implements ICommand {
             final ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/alts "+m.group(0)));
             new Thread(new Runnable() {
                 public void run() {
-                    Matcher matcher = m;
                     HttpURLConnection con = null;
+                    final String IP = m.group(0);
                     try {
-                        URL url = new URL("http://v2.api.iphub.info/ip/"+matcher.group(0));
+
+                        URL url = new URL("http://v2.api.iphub.info/ip/"+IP);
                         con = (HttpURLConnection) url.openConnection();
                         con.setRequestMethod("GET");
                         con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -66,11 +67,11 @@ public class IPInfoCommand implements ICommand {
                         }
                         in.close();
                         if(!isJson(response.toString())) {
-                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+matcher.group(0)).setChatStyle(style));
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
                             return;
                         }
                         JsonObject j = ChatHandler.parser.parse(response.toString()).getAsJsonObject();
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.WHITE+"IP Information: "+EnumChatFormatting.RED+matcher.group(0)).setChatStyle(style));
+                        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.WHITE+"IP Information: "+EnumChatFormatting.RED+IP).setChatStyle(style));
 
                         switch (j.get("block").getAsInt()) {
                             case 0:
@@ -101,10 +102,10 @@ public class IPInfoCommand implements ICommand {
                             }
                             in.close();
                             String j = ChatHandler.parser.parse(errorMessage.toString()).getAsJsonObject().get("error").getAsString();
-                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+matcher.group(0)+": "+EnumChatFormatting.UNDERLINE+j).setChatStyle(style));
-                        } catch (IOException ioException) {
-                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+matcher.group(0)).setChatStyle(style));
-                            ioException.printStackTrace();
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP+": "+EnumChatFormatting.UNDERLINE+j).setChatStyle(style));
+                        } catch (Exception exception) {
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
+                            exception.printStackTrace();
                         }
                         e.printStackTrace();
                     }
