@@ -44,11 +44,12 @@ public class ChatHandler {
 			Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
 			Matcher m = IP_PATTERN.matcher(msg);
 			if(m.find()) {
-				//ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://iphub.info/?ip="+m.group(0)));
-				ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, "/alts "+m.group(0)));
+				final String IP = m.group(0);
+				//ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://iphub.info/?ip="+IP));
+				ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, "/alts "+IP));
 				HttpURLConnection con = null;
 				try {
-					URL url = new URL("http://v2.api.iphub.info/ip/"+m.group(0));
+					URL url = new URL("http://v2.api.iphub.info/ip/"+IP);
 					con = (HttpURLConnection) url.openConnection();
 					con.setRequestMethod("GET");
 					con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -61,7 +62,7 @@ public class ChatHandler {
 					}
 					in.close();
 					if(!isJson(response.toString())) {
-						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
+						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
 						event.message.setChatStyle(style);
 						return;
 					}
@@ -76,11 +77,11 @@ public class ChatHandler {
 							event.message.setChatStyle(style);
 							break;
 						case 2:
-							Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+m.group(0)+EnumChatFormatting.GOLD+" is "+EnumChatFormatting.YELLOW+"Non-residential & residential IP (warning, may flag innocent people)").setChatStyle(style));
+							Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+IP+EnumChatFormatting.GOLD+" is "+EnumChatFormatting.YELLOW+"Non-residential & residential IP (warning, may flag innocent people)").setChatStyle(style));
 							event.message.setChatStyle(style);
 							break;
 						default:
-							Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
+							Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
 							event.message.setChatStyle(style);
 					}
 				} catch (Exception ex) {
@@ -93,9 +94,9 @@ public class ChatHandler {
 						}
 						in.close();
 						String j = ChatHandler.parser.parse(errorMessage.toString()).getAsJsonObject().get("error").getAsString();
-						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)+": "+EnumChatFormatting.UNDERLINE+j).setChatStyle(style));
+						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP+": "+EnumChatFormatting.UNDERLINE+j).setChatStyle(style));
 					} catch (Exception exception) {
-						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+m.group(0)).setChatStyle(style));
+						Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
 						exception.printStackTrace();
 					}
 					ex.printStackTrace();
