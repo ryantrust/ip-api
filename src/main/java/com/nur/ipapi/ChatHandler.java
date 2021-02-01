@@ -46,7 +46,15 @@ public class ChatHandler {
 			if(m.find()) {
 				final String IP = m.group(0);
 				//ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://iphub.info/?ip="+IP));
-				ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, "/alts "+IP));
+				final ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, "/alts "+IP));
+				if (IPHandler.isCached(IP)) {
+					IPHubResult cachedResult = IPHandler.getCached(IP);
+					if(cachedResult!=null) {
+						event.message.appendSibling(new ChatComponentText(" "+cachedResult.getFormattedStringWithParentheses()));
+						event.message.setChatStyle(style);
+						return;
+					}
+				}
 				HttpURLConnection con = null;
 				try {
 					URL url = new URL("http://v2.api.iphub.info/ip/"+IP);
@@ -67,22 +75,14 @@ public class ChatHandler {
 						return;
 					}
 					JsonObject j = parser.parse(response.toString()).getAsJsonObject();
-					switch (j.get("block").getAsInt()) {
-						case 0:
-							event.message.appendSibling(new ChatComponentText(""+EnumChatFormatting.GREEN+" (good)"));
-							event.message.setChatStyle(style);
-							break;
-						case 1:
-							event.message.appendSibling(new ChatComponentText(""+EnumChatFormatting.RED+" (bad)"));
-							event.message.setChatStyle(style);
-							break;
-						case 2:
-							Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+IP+EnumChatFormatting.GOLD+" is "+EnumChatFormatting.YELLOW+"Non-residential & residential IP (warning, may flag innocent people)").setChatStyle(style));
-							event.message.setChatStyle(style);
-							break;
-						default:
-							Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
-							event.message.setChatStyle(style);
+
+					int blockInt = j.get("block").getAsInt();
+					IPHubResult result = IPHubResult.fromBlock(blockInt);
+					if(result == null)Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
+					else {
+						event.message.appendSibling(new ChatComponentText(" "+result.getFormattedStringWithParentheses()));
+						event.message.setChatStyle(style);
+						IPHandler.cache(IP, result);
 					}
 				} catch (Exception ex) {
 					try {
