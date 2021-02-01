@@ -15,8 +15,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.Inet4Address;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,19 +44,21 @@ public class IPInfoCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        if(args.length==0)Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+ EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Please provide an IP Address!"));
+        if(args.length==0) {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+ EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Please provide an IP Address!"));
+            return;
+        }
         String zeroTo255 = "(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})";
         String IP_REGEXP = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;
         Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
         final Matcher m = IP_PATTERN.matcher(args[0]);
         if(m.find()) {
-            final ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/alts "+m.group(0)));
+            final String IP = m.group(0);
+            final ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/alts "+IP));
             new Thread(new Runnable() {
                 public void run() {
                     HttpURLConnection con = null;
-                    final String IP = m.group(0);
                     try {
-
                         URL url = new URL("http://v2.api.iphub.info/ip/"+IP);
                         con = (HttpURLConnection) url.openConnection();
                         con.setRequestMethod("GET");
