@@ -17,6 +17,7 @@ public class Main
 
     public static void setAPIKey(String arg) {
         apiKey = arg;
+        ConfigHandler.setString("api","key",arg);
     }
 
     @EventHandler
