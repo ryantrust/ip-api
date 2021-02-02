@@ -1,12 +1,13 @@
 package com.nur.ipapi;
 
 import java.io.File;
+
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
     public static Configuration config;
-    private static String file = "config/"+Main.MODID+".cfg";
+    private static String file = "config/" + Main.MODID + ".cfg";
 
     public ConfigHandler() {
     }
@@ -148,7 +149,7 @@ public class ConfigHandler {
                 return 0.0F;
             }
 
-            var2 = (float)config.get(category, key, 0.0D).getDouble();
+            var2 = (float) config.get(category, key, 0.0D).getDouble();
         } catch (Exception var6) {
             System.out.println("Cannot load configuration file!");
             return 0.0F;
@@ -165,7 +166,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                float var3 = (float)config.get(category, key, 0.0D).getDouble();
+                float var3 = (float) config.get(category, key, 0.0D).getDouble();
                 return var3;
             }
 
@@ -230,7 +231,7 @@ public class ConfigHandler {
                 return 0;
             }
 
-            var2 = (short)config.get(category, key, 0).getInt();
+            var2 = (short) config.get(category, key, 0).getInt();
         } catch (Exception var6) {
             System.out.println("Cannot load configuration file!");
             return 0;
@@ -247,7 +248,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                short var3 = (short)config.get(category, key, 0).getInt();
+                short var3 = (short) config.get(category, key, 0).getInt();
                 return var3;
             }
 
@@ -271,7 +272,7 @@ public class ConfigHandler {
                 return 0;
             }
 
-            var2 = (byte)config.get(category, key, 0).getInt();
+            var2 = (byte) config.get(category, key, 0).getInt();
         } catch (Exception var6) {
             System.out.println("Cannot load configuration file!");
             return 0;
@@ -288,7 +289,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                byte var3 = (byte)config.get(category, key, 0).getInt();
+                byte var3 = (byte) config.get(category, key, 0).getInt();
                 return var3;
             }
 
@@ -439,8 +440,8 @@ public class ConfigHandler {
 
         try {
             config.load();
-            double set = config.get(category, key, (double)value).getDouble();
-            config.getCategory(category).get(key).set((double)value);
+            double set = config.get(category, key, (double) value).getDouble();
+            config.getCategory(category).get(key).set((double) value);
         } catch (Exception var8) {
             System.out.println("Cannot load configuration file!");
         } finally {
