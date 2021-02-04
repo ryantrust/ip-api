@@ -44,6 +44,13 @@ public class ChatHandler {
 			Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
 			Matcher m = IP_PATTERN.matcher(msg);
 			if(m.find()) {
+				if("".equals(Main.apiKey)) {
+					if(!Main.apiKeyNotSetWarningSent) {
+						event.message.appendSibling(new ChatComponentText(EnumChatFormatting.DARK_RED+" (API Key not set)")).setChatStyle(new ChatStyle().setChatClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, "/setiphubkey ")));
+						Main.apiKeyNotSetWarningSent = true;
+					}
+					return;
+				}
 				final String IP = m.group(0);
 				//ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.OPEN_URL, "https://iphub.info/?ip="+IP));
 				final ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(Action.SUGGEST_COMMAND, "/alts "+IP));
