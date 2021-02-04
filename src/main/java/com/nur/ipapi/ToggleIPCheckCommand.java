@@ -3,6 +3,8 @@ package com.nur.ipapi;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class ToggleIPCheckCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         ChatHandler.toggled = !ChatHandler.toggled;
+        sender.addChatMessage(new ChatComponentText(""+EnumChatFormatting.LIGHT_PURPLE+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.LIGHT_PURPLE+"Automatic IPHub Checking "+(ChatHandler.toggled?EnumChatFormatting.GREEN+"enabled":EnumChatFormatting.RED+"disabled")+EnumChatFormatting.LIGHT_PURPLE+"."));
     }
 
     @Override
