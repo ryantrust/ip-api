@@ -28,7 +28,7 @@ public class ToggleIPCheckCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         ChatHandler.toggled = !ChatHandler.toggled;
-        sender.addChatMessage(new ChatComponentText(""+EnumChatFormatting.LIGHT_PURPLE+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.LIGHT_PURPLE+"Automatic IPHub Checking "+(ChatHandler.toggled?EnumChatFormatting.GREEN+"enabled":EnumChatFormatting.RED+"disabled")+EnumChatFormatting.LIGHT_PURPLE+"."));
+        sender.addChatMessage(new ChatComponentText("" + EnumChatFormatting.LIGHT_PURPLE + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.LIGHT_PURPLE + "Automatic IPHub Checking " + (ChatHandler.toggled ? EnumChatFormatting.GREEN + "enabled" : EnumChatFormatting.RED + "disabled") + EnumChatFormatting.LIGHT_PURPLE + "."));
     }
 
     @Override

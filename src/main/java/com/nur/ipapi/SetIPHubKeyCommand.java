@@ -27,18 +27,18 @@ public class SetIPHubKeyCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        if(args.length==0) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY+"/setiphubkey <api key>"));
+        if (args.length == 0) {
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "/setiphubkey <api key>"));
             return;
         }
-        try{
+        try {
             Main.setAPIKey(args[0]);
-        } catch (Exception e){
-            sender.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+ EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error occured (likely an invalid API key)!"));
+        } catch (Exception e) {
+            sender.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Error occured (likely an invalid API key)!"));
             e.printStackTrace();
             return;
         }
-        sender.addChatMessage(new ChatComponentText(""+EnumChatFormatting.GREEN+ EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.GREEN+"Set API Key!"));
+        sender.addChatMessage(new ChatComponentText("" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.GREEN + "Set API Key!"));
     }
 
     @Override

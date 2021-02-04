@@ -44,22 +44,22 @@ public class IPInfoCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        if(args.length==0) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+ EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Please provide an IP Address!"));
+        if (args.length == 0) {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Please provide an IP Address!"));
             return;
         }
         String zeroTo255 = "(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})";
         String IP_REGEXP = zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255;
         Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
         final Matcher m = IP_PATTERN.matcher(args[0]);
-        if(m.find()) {
+        if (m.find()) {
             final String IP = m.group(0);
-            final ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/alts "+IP));
+            final ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/alts " + IP));
             new Thread(new Runnable() {
                 public void run() {
                     HttpURLConnection con = null;
                     try {
-                        URL url = new URL("http://v2.api.iphub.info/ip/"+IP);
+                        URL url = new URL("http://v2.api.iphub.info/ip/" + IP);
                         con = (HttpURLConnection) url.openConnection();
                         con.setRequestMethod("GET");
                         con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -71,32 +71,32 @@ public class IPInfoCommand implements ICommand {
                             response.append(inputLine);
                         }
                         in.close();
-                        if(!isJson(response.toString())) {
-                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
+                        if (!isJson(response.toString())) {
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Error while scanning " + IP).setChatStyle(style));
                             return;
                         }
                         JsonObject j = ChatHandler.parser.parse(response.toString()).getAsJsonObject();
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.WHITE+"IP Information: "+EnumChatFormatting.RED+IP).setChatStyle(style));
+                        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.WHITE + "IP Information: " + EnumChatFormatting.RED + IP).setChatStyle(style));
 
                         switch (j.get("block").getAsInt()) {
                             case 0:
-                                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+" * "+EnumChatFormatting.GRAY+"Type: "+EnumChatFormatting.GREEN+"Good").setChatStyle(style));
+                                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + " * " + EnumChatFormatting.GRAY + "Type: " + EnumChatFormatting.GREEN + "Good").setChatStyle(style));
                                 break;
                             case 1:
-                                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+" * "+EnumChatFormatting.GRAY+"Type: "+EnumChatFormatting.RED+"Bad").setChatStyle(style));
+                                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + " * " + EnumChatFormatting.GRAY + "Type: " + EnumChatFormatting.RED + "Bad").setChatStyle(style));
                                 break;
                             case 2:
-                                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+" * "+EnumChatFormatting.GRAY+"Type: "+EnumChatFormatting.YELLOW+"Mixed").setChatStyle(style));
+                                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + " * " + EnumChatFormatting.GRAY + "Type: " + EnumChatFormatting.YELLOW + "Mixed").setChatStyle(style));
                                 break;
                             default:
                                 //Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Error while scanning " + m.group(0)).setChatStyle(style));
                         }
 
                         String countryName = j.get("countryName").getAsString();
-                        if("ZZ".equals(countryName))countryName = "Planet Earth";
+                        if ("ZZ".equals(countryName)) countryName = "Planet Earth";
 
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+" * "+EnumChatFormatting.GRAY+"Country: "+EnumChatFormatting.RED+countryName).setChatStyle(style));
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.WHITE+EnumChatFormatting.BOLD+" * "+EnumChatFormatting.GRAY+"ISP: "+EnumChatFormatting.RED+j.get("isp").getAsString()).setChatStyle(style));
+                        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + " * " + EnumChatFormatting.GRAY + "Country: " + EnumChatFormatting.RED + countryName).setChatStyle(style));
+                        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + " * " + EnumChatFormatting.GRAY + "ISP: " + EnumChatFormatting.RED + j.get("isp").getAsString()).setChatStyle(style));
                     } catch (IOException e) {
                         try {
                             BufferedReader in = new BufferedReader(new InputStreamReader(con.getErrorStream()));
@@ -107,18 +107,17 @@ public class IPInfoCommand implements ICommand {
                             }
                             in.close();
                             String j = ChatHandler.parser.parse(errorMessage.toString()).getAsJsonObject().get("error").getAsString();
-                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP+": "+EnumChatFormatting.UNDERLINE+j).setChatStyle(style));
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Error while scanning " + IP + ": " + EnumChatFormatting.UNDERLINE + j).setChatStyle(style));
                         } catch (Exception exception) {
-                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+"Error while scanning "+IP).setChatStyle(style));
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Error while scanning " + IP).setChatStyle(style));
                             exception.printStackTrace();
                         }
                         e.printStackTrace();
                     }
                 }
             }).start();
-        }
-        else {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+ EnumChatFormatting.RED+EnumChatFormatting.BOLD+"(!) "+EnumChatFormatting.RED+args[0]+" is not a valid IP Address!"));
+        } else {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + args[0] + " is not a valid IP Address!"));
             return;
         }
     }
