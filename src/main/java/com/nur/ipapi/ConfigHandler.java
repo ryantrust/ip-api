@@ -84,8 +84,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                int var3 = config.get(category, key, 0).getInt();
-                return var3;
+                return config.get(category, key, 0).getInt();
             }
 
             setInt(category, key, defaultValue);
@@ -125,8 +124,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                double var3 = config.get(category, key, 0.0D).getDouble();
-                return var3;
+                return config.get(category, key, 0.0D).getDouble();
             }
 
             setDouble(category, key, defaultValue);
@@ -166,8 +164,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                float var3 = (float) config.get(category, key, 0.0D).getDouble();
-                return var3;
+                return (float) config.get(category, key, 0.0D).getDouble();
             }
 
             setFloat(category, key, defaultValue);
@@ -207,8 +204,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                String var3 = config.get(category, key, "").getString();
-                return var3;
+                return config.get(category, key, "").getString();
             }
 
             setString(category, key, defaultValue);
@@ -248,8 +244,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                short var3 = (short) config.get(category, key, 0).getInt();
-                return var3;
+                return (short) config.get(category, key, 0).getInt();
             }
 
             setShort(category, key, defaultValue);
@@ -289,8 +284,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                byte var3 = (byte) config.get(category, key, 0).getInt();
-                return var3;
+                return (byte) config.get(category, key, 0).getInt();
             }
 
             setByte(category, key, defaultValue);
@@ -330,8 +324,7 @@ public class ConfigHandler {
         try {
             config.load();
             if (config.getCategory(category).containsKey(key)) {
-                boolean var3 = config.get(category, key, false).getBoolean();
-                return var3;
+                return config.get(category, key, false).getBoolean();
             }
 
             setBoolean(category, key, defaultValue);
@@ -456,8 +449,7 @@ public class ConfigHandler {
 
         try {
             config.load();
-            boolean var1 = config.hasCategory(category);
-            return var1;
+            return config.hasCategory(category);
         } catch (Exception var5) {
             System.out.println("Cannot load configuration file!");
         } finally {
