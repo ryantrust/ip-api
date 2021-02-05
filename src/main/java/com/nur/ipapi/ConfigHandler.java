@@ -462,23 +462,20 @@ public class ConfigHandler {
     public static boolean hasKey(String category, String key) {
         config = new Configuration(new File(file));
 
-        boolean var2;
         try {
             config.load();
             if (config.hasCategory(category)) {
-                var2 = config.getCategory(category).containsKey(key);
-                return var2;
+                return config.getCategory(category).containsKey(key);
             }
-
-            var2 = false;
-        } catch (Exception var6) {
+        } catch (Exception ex) {
             System.out.println("Cannot load configuration file!");
+            ex.printStackTrace();
             return false;
         } finally {
             config.save();
         }
 
-        return var2;
+        return false;
     }
 
     public static void setFile(String filename) {
