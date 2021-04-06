@@ -1,4 +1,4 @@
-# IPHubAPI Mod
+# IPHubAPI Mod v1.1 for Forge 1.8.8 & 1.8.9
 * On first time use, execute the command **/setiphubkey [IPHub API Key]** to set the API key used by your client. This key is saved in a config file, meaning it does not reset on client launch.
   ![SetIPHubKey](https://user-images.githubusercontent.com/53131588/106963056-e1b94180-66f4-11eb-8def-d4224d3e6a94.png)
   
