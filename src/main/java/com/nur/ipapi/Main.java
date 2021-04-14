@@ -17,15 +17,15 @@ public class Main {
 
     public static void setAPIKey(String arg) {
         apiKey = arg;
-        ConfigHandler.setString("api", "key", arg);
+        ConfigHandler.setString("api", "vpnapiio", arg);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new ChatHandler());
+        MinecraftForge.EVENT_BUS.register(new AutoCheckHandler());
         ClientCommandHandler.instance.registerCommand(new IPInfoCommand());
         ClientCommandHandler.instance.registerCommand(new ToggleIPCheckCommand());
-        ClientCommandHandler.instance.registerCommand(new SetIPHubKeyCommand());
-        apiKey = ConfigHandler.getString("api", "key", "");
+        ClientCommandHandler.instance.registerCommand(new SetVPNAPIKeyCommand());
+        apiKey = ConfigHandler.getString("api", "vpnapiio", "");
     }
 }

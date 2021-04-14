@@ -9,15 +9,15 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetIPHubKeyCommand implements ICommand {
+public class SetVPNAPIKeyCommand implements ICommand {
     @Override
     public String getCommandName() {
-        return "setiphubkey";
+        return "setvpnapikey";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "setiphubkey <api key>";
+        return "setvpnapikey <api key>";
     }
 
     @Override
@@ -28,17 +28,17 @@ public class SetIPHubKeyCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (args.length == 0) {
-            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "/setiphubkey <api key>"));
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "/setvpnapikey <api key>"));
             return;
         }
         try {
             Main.setAPIKey(args[0]);
         } catch (Exception e) {
-            sender.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Error occured (likely an invalid API key)!"));
+            sender.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Error occured while setting API key!"));
             e.printStackTrace();
             return;
         }
-        sender.addChatMessage(new ChatComponentText("" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.GREEN + "Set API Key!"));
+        sender.addChatMessage(new ChatComponentText("" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.GREEN + "Set API key!"));
     }
 
     @Override
