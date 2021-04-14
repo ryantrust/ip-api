@@ -1,6 +1,5 @@
 package com.nur.ipapi;
 
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -8,48 +7,6 @@ import java.io.File;
 public class ConfigHandler {
     public static Configuration config;
     private static String file = "config/" + Main.MODID + ".cfg";
-
-    public static void init() {
-        config = new Configuration(new File(file));
-
-        try {
-            config.load();
-        } catch (Exception exception) {
-            System.out.println("Cannot load configuration file!");
-        } finally {
-            config.save();
-        }
-
-    }
-
-    public static void removeConfig(String category) {
-        config = new Configuration(new File(file));
-
-        try {
-            config.load();
-            if (config.hasCategory(category)) {
-                config.removeCategory(new ConfigCategory(category));
-            }
-        } catch (Exception exception) {
-            System.out.println("Cannot load configuration file!");
-        } finally {
-            config.save();
-        }
-
-    }
-
-    public static void removeConfig(String category, String key) {
-        config = new Configuration(new File(file));
-
-        try {
-            config.load();
-            if (config.getCategory(category).containsKey(key)) config.getCategory(category).remove(key);
-        } catch (Exception exception) {
-            System.out.println("Cannot load configuration file!");
-        } finally {
-            config.save();
-        }
-    }
 
     public static int getInt(String category, String key) {
         config = new Configuration(new File(file));
