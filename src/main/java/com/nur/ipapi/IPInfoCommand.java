@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.nur.ipapi.AutoCheckHandler.isJson;
-
 public class IPInfoCommand implements ICommand {
     @Override
     public String getCommandName() {
@@ -70,7 +68,7 @@ public class IPInfoCommand implements ICommand {
                     }
                     in.close();
 
-                    if (!isJson(response.toString())) {
+                    if (AutoCheckHandler.isNotJson(response.toString())) {
                         style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(response.toString())));
                         Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "(!) " + EnumChatFormatting.RED + "Error while scanning " + IP).setChatStyle(style));
                         return;
@@ -82,7 +80,7 @@ public class IPInfoCommand implements ICommand {
 
                     BufferedReader bufReader = new BufferedReader(new StringReader(IPHandler.ipInfo(j)));
                     String ln;
-                    while((ln = bufReader.readLine()) != null) {
+                    while ((ln = bufReader.readLine()) != null) {
                         Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(ln).setChatStyle(style));
                     }
 
