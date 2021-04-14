@@ -35,7 +35,7 @@ public class AutoCheckHandler {
     }
 
     @SubscribeEvent
-    public void onOtherChat(ClientChatReceivedEvent event) {
+    public void onOtherChat(final ClientChatReceivedEvent event) {
         if (!toggled) return;
         String msg = event.message.getUnformattedText();
         if (msg.contains("IP Address") || msg.contains("Scanning") || (msg.contains("*") && msg.contains(":") && msg.contains("[") && msg.contains("]")) || msg.contains("Last used IP:")) {
