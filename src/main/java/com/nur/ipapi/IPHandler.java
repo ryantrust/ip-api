@@ -18,9 +18,9 @@ public class IPHandler {
         if (j.has("security")) {
             JsonObject security = j.get("security").getAsJsonObject();
             ipInfo += "" + EnumChatFormatting.WHITE + EnumChatFormatting.BOLD + " * " +
-                    EnumChatFormatting.GRAY + "VPN: " + (security.has("vpn") ? (security.get("vpn").getAsBoolean() ? EnumChatFormatting.GREEN + "No" : EnumChatFormatting.RED + "Yes") : EnumChatFormatting.GOLD + "unknown") + EnumChatFormatting.GRAY +
-                    ", Proxy: " + (security.has("proxy") ? (security.get("proxy").getAsBoolean() ? EnumChatFormatting.GREEN + "No" : EnumChatFormatting.RED + "Yes") : EnumChatFormatting.GOLD + "unknown") + EnumChatFormatting.GRAY +
-                    ", Tor: " + (security.has("tor") ? (security.get("tor").getAsBoolean() ? EnumChatFormatting.GREEN + "No" : EnumChatFormatting.RED + "Yes") : EnumChatFormatting.GOLD + "unknown");
+                    EnumChatFormatting.GRAY + "VPN: " + (security.has("vpn") ? (security.get("vpn").getAsBoolean() ? EnumChatFormatting.RED + "Yes" : EnumChatFormatting.GREEN + "No") : EnumChatFormatting.GOLD + "unknown") + EnumChatFormatting.GRAY +
+                    ", Proxy: " + (security.has("proxy") ? (security.get("proxy").getAsBoolean() ? EnumChatFormatting.RED + "Yes" : EnumChatFormatting.GREEN + "No") : EnumChatFormatting.GOLD + "unknown") + EnumChatFormatting.GRAY +
+                    ", Tor: " + (security.has("tor") ? (security.get("tor").getAsBoolean() ? EnumChatFormatting.RED + "Yes" : EnumChatFormatting.GREEN + "No") : EnumChatFormatting.GOLD + "unknown");
         }
 
         if (j.has("location")) {
@@ -51,21 +51,13 @@ public class IPHandler {
         return ipInfo;
     }
 
-    public static boolean isCached(InetAddress ip) {
-        return ipCache.containsKey(ip);
-    }
-
     public static boolean isCached(String ip) {
         try {
-            return isCached(Inet4Address.getByName(ip));
+            return ipCache.containsKey(Inet4Address.getByName(ip));
         } catch (UnknownHostException e) {
             e.printStackTrace();
             return false;
         }
-    }
-
-    public static APIResult getCached(InetAddress ip) {
-        return ipCache.get(ip);
     }
 
     public static APIResult getCached(String ip) {
@@ -77,19 +69,15 @@ public class IPHandler {
         }
     }
 
-    public static void cache(InetAddress ip, APIResult result) {
-        if (APIResult.ERROR.equals(result)) return;
-        ipCache.put(ip, result);
-    }
-
     public static void cache(String ip, APIResult result) {
         if (APIResult.ERROR.equals(result)) return;
         try {
-            cache(Inet4Address.getByName(ip), result);
+            ipCache.put(Inet4Address.getByName(ip), result);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
     }
+
     public static boolean isInfoCached(String ip) {
         try {
             return infoCache.containsKey(Inet4Address.getByName(ip));
@@ -108,13 +96,9 @@ public class IPHandler {
         }
     }
 
-    public static void cacheInfo(InetAddress ip, String info) {
-        infoCache.put(ip, info);
-    }
-
     public static void cacheInfo(String ip, String info) {
         try {
-            cacheInfo(Inet4Address.getByName(ip), info);
+            infoCache.put(Inet4Address.getByName(ip), info);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
